@@ -101,7 +101,17 @@ def register(from_points: list, to_points: list):
     from_recenter = recenter_matrix(from_points, from_centroid)
     to_recenter = recenter_matrix(to_points, to_centroid)
 
-    angle_diff = calc_angle(from_recenter, to_recenter)
+    angle_diff = calc_angle(from_recenter, to_recenter) # returned angle + angle used to solve for Rotation matrix for translation
+
+    theta = np.radians(angle_diff)
+    R = np.array([
+        [np.cos(theta), -np.sin(theta)],
+        [np.sin(theta), np.cos(theta)]
+    ])
+
+    translation = to_centroid - R @ from_centroid # translation found in isolation
+
+    return angle_diff, translation
 
 
     
