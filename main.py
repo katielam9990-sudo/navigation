@@ -127,17 +127,18 @@ scan_points = np.array([
     [0, 450],
 ])
 
-true_angle = 30
-true_translation = (200, 300)
+if __name__ == "__main__":
+    true_angle = 30
+    true_translation = (200, 300)
 
-OR_points = transform_points(scan_points, true_angle, true_translation)
+    OR_points = transform_points(scan_points, true_angle, true_translation)
 
-recovered_angle, recovered_translation = register(scan_points, OR_points)
+    recovered_angle, recovered_translation = register(scan_points, OR_points)
 
-print("true angle:      ", true_angle)
-print("recovered angle: ", recovered_angle)
-print("true translation:      ", true_translation)
-print("recovered translation: ", recovered_translation)
+    print("true angle:      ", true_angle)
+    print("recovered angle: ", recovered_angle)
+    print("true translation:      ", true_translation)
+    print("recovered translation: ", recovered_translation)
 
-plot_points([(scan_points, "scan space"), (OR_points, "OR space translation + rotation")], title="Scan vs OR")
+    plot_points([(scan_points, "scan space"), (OR_points, "OR space translation + rotation")], title="Scan vs OR")
 
