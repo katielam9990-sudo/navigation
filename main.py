@@ -101,7 +101,7 @@ def register(from_points: list, to_points: list):
     from_recenter = recenter_matrix(from_points, from_centroid)
     to_recenter = recenter_matrix(to_points, to_centroid)
 
-    angle_diff = calc_angle(from_recenter, to_recenter) # returned angle + angle used to solve for Rotation matrix for translation
+    angle_diff = calc_angle(from_recenter, to_recenter) # returned angle/angle used to solve for Rotation matrix for translation
 
     theta = np.radians(angle_diff)
     R = np.array([
@@ -116,9 +116,6 @@ def register(from_points: list, to_points: list):
 
     
 
-
-
-
 # Each row is one point [x, y], in millimeters.
 # Truth Scan points of Tibia. Adult shin is around 300mm-470mm long and 40mm-95mm wide
 scan_points = np.array([
@@ -130,7 +127,17 @@ scan_points = np.array([
     [0, 450],
 ])
 
-or_points = transform_points(scan_points, 90, (200, 300))
+true_angle = 30
+true_translation = (200, 300)
 
-plot_points([(scan_points, "scan space"), (or_points, "OR space translation + rotation")], title="Scan vs OR")
+OR_points = transform_points(scan_points, true_angle, true_translation)
+
+recovered_angle, recovered_translation = register(scan_points, OR_points)
+
+print("true angle:      ", true_angle)
+print("recovered angle: ", recovered_angle)
+print("true translation:      ", true_translation)
+print("recovered translation: ", recovered_translation)
+
+plot_points([(scan_points, "scan space"), (OR_points, "OR space translation + rotation")], title="Scan vs OR")
 
